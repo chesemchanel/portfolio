@@ -1,64 +1,386 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About | Chesem Chanel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --accent: #7c6bff;
+      --accent2: #ff6b9d;
+      --accent3: #6bffda;
+      --text: #f0f0f8;
+      --muted: #8888aa;
+      --border: #22223a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,107,157,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(124,107,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active {
+      color: var(--accent);
+      position: relative;
+    }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 7rem 2.5rem 5rem;
+    }
+
+    .page-header {
+      margin-bottom: 3.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+
+    .intro-text {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 600px;
+    }
+
+    /* STORY */
+    .story-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .story-card p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    /* SKILLS */
+    .skills-section {
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .skill-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .skill-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .skill-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    .skill-bar-wrap {
+      margin-top: 0.8rem;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      animation: growBar 1.2s ease both;
+    }
+
+    @keyframes growBar {
+      from { width: 0; }
+    }
+
+    /* TIMELINE */
+    .timeline-section {
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 1.5rem;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 2.5rem 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .timeline-year {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--accent2); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 1rem; }
+      .page-wrapper { padding: 6rem 1.2rem 4rem; }
+      .story-card { padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav>
+    <a href="index.html" class="nav-logo">Chesem<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
-  <main>
-    <section>
+  <main class="page-wrapper">
+
+    <header class="page-header">
+      <p class="section-label">Get to know me</p>
       <h1>About Me</h1>
-      <p>Hi! I'm Chesem Chanel, a programming student on a journey to become a software developer. I'm currently studying at IYF Weekend Academy Season 10.</p>
-      <p>I enjoy building web pages, writing code, gaming 🎮, and exploring new technologies.</p>
+      <p class="intro-text">
+        A passionate programming student who believes great software starts with curiosity, creativity, and a love for problem-solving.
+      </p>
+    </header>
+
+    <!-- My Story -->
+    <article class="story-card">
+      <h2>🌟 My Story</h2>
+      <p>
+        Hey! I'm Chesem Chanel — a programming student with big dreams of becoming a software developer. My journey into tech started with a simple curiosity: <em>how do websites actually work?</em> That question led me down a rabbit hole of HTML tags, CSS styles, and JavaScript logic — and I haven't looked back since.
+      </p>
+      <br>
+      <p>
+        I love building things with code, whether it's a beautifully styled webpage or a clever interactive feature. When I'm not coding, you'll find me gaming 🎮 or exploring the latest tech trends. I'm always hungry to learn and grow.
+      </p>
+    </article>
+
+    <!-- Skills -->
+    <section class="skills-section">
+      <h2>🛠️ My Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon">🌐</div>
+          <div class="skill-name">HTML5</div>
+          <div class="skill-desc">Semantic markup, accessibility, and solid page structure.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%;"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🎨</div>
+          <div class="skill-name">CSS3</div>
+          <div class="skill-desc">Styling, layouts, animations, and responsive design.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:72%;"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">⚡</div>
+          <div class="skill-name">JavaScript</div>
+          <div class="skill-desc">Interactivity, DOM manipulation, and logic building.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%;"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🐙</div>
+          <div class="skill-name">GitHub</div>
+          <div class="skill-desc">Version control, repositories, and collaboration.</div>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:65%;"></div></div>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>My Details</h2>
-      <table>
-        <tr>
-          <th>Name</th>
-          <td>Chesem Chanel</td>
-        </tr>
-        <tr>
-          <th>Role</th>
-          <td>Programming Student</td>
-        </tr>
-        <tr>
-          <th>School</th>
-          <td>IYF Weekend Academy</td>
-        </tr>
-        <tr>
-          <th>Hobbies</th>
-          <td>Gaming, Coding, Exploring Tech</td>
-        </tr>
-      </table>
+    <!-- Timeline -->
+    <section class="timeline-section">
+      <h2>📚 Education & Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2026 — Present</div>
+          <div class="timeline-title">IYF Programming Course — Season 10</div>
+          <div class="timeline-desc">Learning web development fundamentals including HTML5, CSS3, JavaScript, GitHub collaboration, and building and deploying real projects.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2026</div>
+          <div class="timeline-title">First Portfolio Website Deployed</div>
+          <div class="timeline-desc">Built and deployed my personal portfolio site on GitHub Pages — my first live website on the internet!</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2025</div>
+          <div class="timeline-title">Started Learning Web Development</div>
+          <div class="timeline-desc">Began exploring HTML, CSS, and JavaScript. Fell in love with the idea of creating things that people can see and use online.</div>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Skills</h2>
-      <ul>
-        <li>HTML5 — Structuring web pages</li>
-        <li>CSS3 — Styling and layouts</li>
-        <li>JavaScript — Adding interactivity</li>
-      </ul>
-    </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 Chesem Chanel | Built with ❤️</p>
+    <p>© 2026 Chesem Chanel | Built with <span>❤</span></p>
   </footer>
 
 </body>

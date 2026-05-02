@@ -1,43 +1,436 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chesem Chanel | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --accent: #7c6bff;
+      --accent2: #ff6b9d;
+      --accent3: #6bffda;
+      --text: #f0f0f8;
+      --muted: #8888aa;
+      --border: #22223a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background mesh */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,107,255,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(107,255,218,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 60% 10%, rgba(255,107,157,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-links a.active {
+      color: var(--accent);
+      position: relative;
+    }
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 2.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-content { max-width: 700px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(124,107,255,0.12);
+      border: 1px solid rgba(124,107,255,0.3);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    h1 .name-highlight {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 24px rgba(124,107,255,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(124,107,255,0.5);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* SKILLS STRIP */
+    .skills-strip {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .skills-grid {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .skill-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .skill-tag:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .skill-tag .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* QUICK LINKS */
+    .quick-links {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 2.5rem 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .page-card {
+      position: relative;
+      display: block;
+      padding: 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    .page-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .page-card:nth-child(1)::before { background: radial-gradient(circle at top left, rgba(124,107,255,0.08), transparent 60%); }
+    .page-card:nth-child(2)::before { background: radial-gradient(circle at top left, rgba(255,107,157,0.08), transparent 60%); }
+    .page-card:nth-child(3)::before { background: radial-gradient(circle at top left, rgba(107,255,218,0.08), transparent 60%); }
+
+    .page-card:hover { border-color: rgba(124,107,255,0.4); transform: translateY(-4px); }
+    .page-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--muted);
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .page-card:hover .card-arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--accent2); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 1rem; }
+      .hero { padding: 6rem 1.2rem 3rem; }
+      .skills-strip, .quick-links { padding-left: 1.2rem; padding-right: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav>
+    <a href="index.html" class="nav-logo">Chesem<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
   <main>
-    <section>
-      <h1>Hello, I'm Chesem Chanel 👋</h1>
-      <p>💻 Programming Student &amp; Future Software Developer</p>
-      <p>I love building things with code. I'm passionate about learning HTML, JavaScript, and CSS. I also enjoy gaming 🎮 and exploring new tech.</p>
-      <a href="projects.html">View My Projects</a>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">💻 Available for opportunities</div>
+        <h1>Hello, I'm<br><span class="name-highlight">Chesem Chanel</span> 👋</h1>
+        <p class="hero-sub">
+          Programming Student &amp; Future Software Developer. I love building things with code — passionate about HTML, JavaScript, and CSS. I also enjoy gaming 🎮 and exploring new tech.
+        </p>
+        <div class="hero-cta">
+          <a href="projects.html" class="btn-primary">View My Projects →</a>
+          <a href="contact.html" class="btn-outline">Get In Touch</a>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>My Skills</h2>
-      <ul>
-        <li>HTML5</li>
-        <li>CSS3</li>
-        <li>JavaScript</li>
-      </ul>
+    <section class="skills-strip">
+      <p class="section-label">My Skills</p>
+      <div class="skills-grid">
+        <div class="skill-tag"><span class="dot" style="background:#ff6b35;"></span> HTML5</div>
+        <div class="skill-tag"><span class="dot" style="background:#2196f3;"></span> CSS3</div>
+        <div class="skill-tag"><span class="dot" style="background:#f7df1e;"></span> JavaScript</div>
+        <div class="skill-tag"><span class="dot" style="background:#6bffda;"></span> GitHub</div>
+        <div class="skill-tag"><span class="dot" style="background:#7c6bff;"></span> Responsive Design</div>
+      </div>
+    </section>
+
+    <section class="quick-links">
+      <p class="section-label">Explore My Portfolio</p>
+      <div class="cards-grid">
+        <a href="about.html" class="page-card">
+          <div class="card-icon">🙋‍♂️</div>
+          <div class="card-title">About Me</div>
+          <p class="card-desc">Learn about my background, story, skills and education journey.</p>
+          <span class="card-arrow">↗</span>
+        </a>
+        <a href="projects.html" class="page-card">
+          <div class="card-icon">🚀</div>
+          <div class="card-title">My Projects</div>
+          <p class="card-desc">Check out what I've been building — from web pages to coding projects.</p>
+          <span class="card-arrow">↗</span>
+        </a>
+        <a href="contact.html" class="page-card">
+          <div class="card-icon">✉️</div>
+          <div class="card-title">Contact Me</div>
+          <p class="card-desc">Want to collaborate or just say hi? Reach out — I'd love to connect!</p>
+          <span class="card-arrow">↗</span>
+        </a>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 Chesem Chanel | Built with ❤️</p>
+    <p>© 2026 Chesem Chanel | Built with <span>❤</span></p>
   </footer>
 
 </body>
